@@ -21,7 +21,7 @@ mount /dev/sda4 "$chroot" && cd "$chroot" && mkdir boot && mount /dev/sda1 boot
 
 # download stage 3, unpack it, delete the stage3 archive file
 wget -nv --tries=5 "$stage3url"
-tar xpf "$stage3file" && rm "$stage3file"
+tar xpf stage3*.tar.bz2 && rm stage3*.tar.bz2
 
 # prepeare chroot, update env
 mount --bind /proc "$chroot/proc"
@@ -80,4 +80,13 @@ env-update && source /etc/profile
 DATAEOF
 
 # update portage tree to most current state
-chroot "$chroot" emerge --sync
+chroot "$chroot" /bin/bash <<DATAEOF
+echo SYNC=\"rsync://rsync$country_code.gentoo.org/gentoo-portage\" >> /etc/portage/make.conf
+
+echo "updating Portage Tree..."
+emerge --sync --quiet
+
+#find the 3 fastest GENTOO_MIRRORS - Uncomment to use it (add 15mins to the build)
+#emerge --nospinner mirrorselect
+#mirrorselect -s3 -b10 -o -D >> /etc/portage/make.conf
+DATAEOF

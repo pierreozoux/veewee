@@ -32,7 +32,7 @@ EOF
 # to each its own... home
 chown -R vagrant /home/vagrant
 
-emerge app-admin/sudo
+emerge --nospinner app-admin/sudo
 
 echo 'sshd:ALL' > /etc/hosts.allow
 echo 'ALL:ALL' > /etc/hosts.deny

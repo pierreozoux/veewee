@@ -3,6 +3,6 @@ source /etc/profile
 
 # install system logger
 chroot "$chroot" /bin/bash <<DATAEOF
-emerge app-admin/rsyslog
+emerge --nospinner app-admin/rsyslog
 rc-update add rsyslog default
 DATAEOF

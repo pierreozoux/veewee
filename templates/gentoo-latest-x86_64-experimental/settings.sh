@@ -1,16 +1,19 @@
 # settings that will be shared between all scripts
 
 cat <<DATAEOF > "/etc/profile.d/veewee.sh"
-# stage 3 filename and full url
-export stage3file="stage3-amd64-20130130.tar.bz2"
-export stage3url="http://distfiles.gentoo.org/releases/amd64/current-stage3/\$stage3file"
+# stage 3 full url
+export stage3url="http://distfiles.gentoo.org/releases/\$architecture/autobuilds/\$stage3file"
 
-# these two (configuring the compiler) and the stage3 url can be changed to build a 32 bit system
-export accept_keywords="amd64"
-export chost="x86_64-pc-linux-gnu"
+#Choose your SYNC server regarding your country
+#Check this page for more details http://www.gentoo.org/main/en/mirrors-rsync.xml
+#check base.sh to see how this is implemented
+#If empty, it will default to the default gentoo rotation
+#country_code=".us" #for example
+#country_code=".fr" #for example
+country_code=""
 
-# kernel version to use
-export kernel_version="3.6.11"
+# for the compiler
+export accept_keywords="\$architecture"
 
 # timezone (as a subdirectory of /usr/share/zoneinfo)
 export timezone="UTC"

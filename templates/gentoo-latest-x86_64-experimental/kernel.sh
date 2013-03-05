@@ -8,12 +8,21 @@ sys-kernel/genkernel -cryptsetup
 DATAEOF
 
 cat <<DATAEOF >> "$chroot/etc/portage/package.keywords"
-dev-util/kbuild ~amd64
+dev-util/kbuild ~$architecture
 DATAEOF
+
+# Kernel Version
+chroot "$chroot" /bin/bash <<DATAEOF
+emerge --color n --nospinner --search gentoo-sources | grep 'Latest version available' | cut -d ':' -f 2 | tr -d ' ' > /root/kernel_version
+DATAEOF
+
+kernel_version=$(cat /mnt/gentoo/root/kernel_version)
+
+echo "export kernel_version=$kernel_version" >> /etc/profile.d/veewee.sh
 
 # get, configure, compile and install the kernel and modules
 chroot "$chroot" /bin/bash <<DATAEOF
-emerge =sys-kernel/gentoo-sources-$kernel_version sys-kernel/genkernel gentoolkit
+emerge --nospinner =sys-kernel/gentoo-sources-$kernel_version sys-kernel/genkernel gentoolkit
 
 cd /usr/src/linux
 # use a default configuration as a starting point
@@ -53,7 +62,7 @@ CONFIG_NFS_V2=m
 CONFIG_NFS_V3=m
 CONFIG_NFS_V4=m
 CONFIG_NFSD=m
-CONFIG_CIFS=m
+CONFIG_CIFS=y
 CONFIG_CIFS_UPCAL=y
 CONFIG_CIFS_XATTR=y
 CONFIG_CIFS_DFS_UPCALL=y
@@ -91,11 +100,11 @@ CONFIG_CRYPTO_RMD320=y
 CONFIG_CRYPTO_SHA1_SSSE3=m
 CONFIG_CRYPTO_SHA256=y
 CONFIG_CRYPTO_SHA512=y
-CONFIG_CRYPTO_AES_X86_64=y
+CONFIG_CRYPTO_AES_$grub_architecture=y
 CONFIG_CRYPTO_AES_NI_INTEL=m
-CONFIG_CRYPTO_BLOWFISH_X86_64=y
-CONFIG_CRYPTO_SALSA20_X86_64=y
-CONFIG_CRYPTO_TWOFISH_X86_64_3WAY=y
+CONFIG_CRYPTO_BLOWFISH_$grub_architecture=y
+CONFIG_CRYPTO_SALSA20_$grub_architecture=y
+CONFIG_CRYPTO_TWOFISH_$grub_architecture\_3WAY=y
 CONFIG_CRYPTO_DEFLATE=y
 # rtc
 CONFIG_RTC=y

@@ -2,4 +2,4 @@
 source /etc/profile
 
 # install nfs utilities and automount support
-chroot "$chroot" emerge net-fs/nfs-utils net-fs/autofs
+chroot "$chroot" emerge --nospinner net-fs/nfs-utils net-fs/autofs

@@ -2,7 +2,7 @@
 source /etc/profile
 
 # install grub
-chroot "$chroot" emerge grub
+chroot "$chroot" emerge --nospinner grub
 
 # add installed kernel entry
 cat <<DATAEOF > "$chroot/boot/grub/grub.conf"
@@ -11,8 +11,8 @@ timeout 1
 
 title=Gentoo Linux ($kernel_version-gentoo)
 root (hd0,0)
-kernel /boot/kernel-genkernel-x86_64-$kernel_version-gentoo root=/dev/ram0 real_root=/dev/sda4
-initrd /boot/initramfs-genkernel-x86_64-$kernel_version-gentoo
+kernel /boot/kernel-genkernel-$grub_architecture-$kernel_version-gentoo root=/dev/ram0 real_root=/dev/sda4
+initrd /boot/initramfs-genkernel-$grub_architecture-$kernel_version-gentoo
 DATAEOF
 
 # make the disk bootable
