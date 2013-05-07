@@ -20,3 +20,5 @@ cd ..
 rm -rf *ruby-*
 
 gem install puppet chef --no-rdoc --no-ri
+
+echo 'PATH=$PATH:/usr/local/bin' > /etc/profile.d/ruby.sh
